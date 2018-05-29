@@ -11,6 +11,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.net.URL;
+import java.util.List;
 
 public class FirstTest {
 
@@ -99,6 +100,40 @@ public class FirstTest {
                 "X is still present on the page",
                 5
         );
+    }
+
+    @Test
+    public void testCheckTextInArticles()
+    {
+        String searchWord = "Star Wars";
+
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_container"),
+                "Cannot find 'Search Wikipedia' input",
+                5
+        );
+
+        waitForElementAndSendKeys(
+                By.id("org.wikipedia:id/search_src_text"),
+                searchWord,
+                "Cannot find search input",
+                5
+        );
+
+        waitForElementPresent(
+                By.id("org.wikipedia:id/page_list_item_container"),
+                "Articles not found!",
+                15
+        );
+
+        List<WebElement> titles = driver.findElementsById("org.wikipedia:id/page_list_item_title");
+
+        for (WebElement title : titles) {
+            Assert.assertTrue(
+                    "Title does not contain search word!",
+                    title.getAttribute("text").contains(searchWord)
+            );
+        }
     }
 
     private WebElement waitForElementPresent(By by, String error_message, long timeoutInSeconds)

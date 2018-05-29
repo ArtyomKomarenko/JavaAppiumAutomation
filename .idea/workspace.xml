@@ -17,10 +17,12 @@
       <file leaf-file-name="FirstTest.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/FirstTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="87">
-              <caret line="65" column="21" lean-forward="true" selection-start-line="65" selection-start-column="21" selection-end-line="65" selection-end-column="21" />
+            <state relative-caret-position="409">
+              <caret line="130" column="41" selection-start-line="130" selection-start-column="41" selection-end-line="130" selection-end-column="41" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="method#testCompareSearchFieldPlaceholder#0;class#FirstTest#0" />
+                <element signature="method#testCancelSearch#0;class#FirstTest#0" />
               </folding>
             </state>
           </provider>
@@ -129,7 +131,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.FirstTest.testCancelSearch">
+  <component name="RunManager" selected="JUnit.FirstTest.testCheckTextInArticles">
     <configuration default="true" type="Application" factoryName="Application">
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
     </configuration>
@@ -157,6 +159,23 @@
       <option name="PACKAGE_NAME" value="" />
       <option name="MAIN_CLASS_NAME" value="FirstTest" />
       <option name="METHOD_NAME" value="testCancelSearch" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <patterns />
+    </configuration>
+    <configuration name="FirstTest.testCheckTextInArticles" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="JavaAppiumAutomation" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="FirstTest" />
+      <option name="METHOD_NAME" value="testCheckTextInArticles" />
       <option name="TEST_OBJECT" value="method" />
       <option name="VM_PARAMETERS" value="-ea" />
       <option name="PARAMETERS" />
@@ -208,9 +227,11 @@
     <list>
       <item itemvalue="JUnit.FirstTest" />
       <item itemvalue="JUnit.FirstTest.testCancelSearch" />
+      <item itemvalue="JUnit.FirstTest.testCheckTextInArticles" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.FirstTest.testCheckTextInArticles" />
         <item itemvalue="JUnit.FirstTest.testCancelSearch" />
         <item itemvalue="JUnit.FirstTest" />
       </list>
@@ -230,21 +251,6 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="FirstTest_testCancelSearch - 2018.05.30 at 01h 37m 10s.xml">
-      <configuration name="FirstTest.testCancelSearch" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="FirstTest_testCancelSearch - 2018.05.30 at 01h 41m 00s.xml">
-      <configuration name="FirstTest.testCancelSearch" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="FirstTest_testCancelSearch - 2018.05.30 at 01h 42m 05s.xml">
-      <configuration name="FirstTest.testCancelSearch" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="FirstTest_testCancelSearch - 2018.05.30 at 01h 55m 43s.xml">
-      <configuration name="FirstTest.testCancelSearch" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="FirstTest_testCancelSearch - 2018.05.30 at 01h 59m 16s.xml">
-      <configuration name="FirstTest.testCancelSearch" configurationId="JUnit" />
-    </history-entry>
     <history-entry file="FirstTest_testCancelSearch - 2018.05.30 at 02h 07m 47s.xml">
       <configuration name="FirstTest.testCancelSearch" configurationId="JUnit" />
     </history-entry>
@@ -259,6 +265,21 @@
     </history-entry>
     <history-entry file="FirstTest_testCancelSearch - 2018.05.30 at 02h 14m 36s.xml">
       <configuration name="FirstTest.testCancelSearch" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="FirstTest_testCancelSearch - 2018.05.30 at 02h 20m 50s.xml">
+      <configuration name="FirstTest.testCancelSearch" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="FirstTest_testCancelSearch - 2018.05.30 at 02h 22m 24s.xml">
+      <configuration name="FirstTest.testCancelSearch" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="FirstTest_testCheckTextInArticles - 2018.05.30 at 02h 31m 56s.xml">
+      <configuration name="FirstTest.testCheckTextInArticles" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="FirstTest_testCheckTextInArticles - 2018.05.30 at 02h 32m 58s.xml">
+      <configuration name="FirstTest.testCheckTextInArticles" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="FirstTest_testCheckTextInArticles - 2018.05.30 at 02h 35m 51s.xml">
+      <configuration name="FirstTest.testCheckTextInArticles" configurationId="JUnit" />
     </history-entry>
   </component>
   <component name="ToolWindowManager">
@@ -303,6 +324,8 @@
           <caret line="152" column="116" lean-forward="true" selection-start-line="152" selection-start-column="116" selection-end-line="152" selection-end-column="116" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="method#testCompareSearchFieldPlaceholder#0;class#FirstTest#0" />
+            <element signature="method#testCancelSearch#0;class#FirstTest#0" />
           </folding>
         </state>
       </provider>
@@ -313,6 +336,8 @@
           <caret line="153" column="88" lean-forward="true" selection-start-line="153" selection-start-column="88" selection-end-line="153" selection-end-column="88" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="method#testCompareSearchFieldPlaceholder#0;class#FirstTest#0" />
+            <element signature="method#testCancelSearch#0;class#FirstTest#0" />
           </folding>
         </state>
       </provider>
@@ -323,6 +348,8 @@
           <caret line="109" column="43" selection-start-line="109" selection-start-column="43" selection-end-line="109" selection-end-column="43" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="method#testCompareSearchFieldPlaceholder#0;class#FirstTest#0" />
+            <element signature="method#testCancelSearch#0;class#FirstTest#0" />
           </folding>
         </state>
       </provider>
@@ -333,6 +360,8 @@
           <caret line="109" column="43" lean-forward="true" selection-start-line="109" selection-start-column="43" selection-end-line="109" selection-end-column="43" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="method#testCompareSearchFieldPlaceholder#0;class#FirstTest#0" />
+            <element signature="method#testCancelSearch#0;class#FirstTest#0" />
           </folding>
         </state>
       </provider>
@@ -343,6 +372,8 @@
           <caret line="16" column="69" selection-start-line="16" selection-start-column="69" selection-end-line="16" selection-end-column="69" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="method#testCompareSearchFieldPlaceholder#0;class#FirstTest#0" />
+            <element signature="method#testCancelSearch#0;class#FirstTest#0" />
           </folding>
         </state>
       </provider>
@@ -367,6 +398,8 @@
           <caret line="16" column="69" selection-start-line="16" selection-start-column="69" selection-end-line="16" selection-end-column="69" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="method#testCompareSearchFieldPlaceholder#0;class#FirstTest#0" />
+            <element signature="method#testCancelSearch#0;class#FirstTest#0" />
           </folding>
         </state>
       </provider>
@@ -387,6 +420,8 @@
           <caret line="16" column="69" lean-forward="true" selection-start-line="16" selection-start-column="69" selection-end-line="16" selection-end-column="69" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="method#testCompareSearchFieldPlaceholder#0;class#FirstTest#0" />
+            <element signature="method#testCancelSearch#0;class#FirstTest#0" />
           </folding>
         </state>
       </provider>
@@ -454,10 +489,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/FirstTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="87">
-          <caret line="65" column="21" lean-forward="true" selection-start-line="65" selection-start-column="21" selection-end-line="65" selection-end-column="21" />
+        <state relative-caret-position="409">
+          <caret line="130" column="41" selection-start-line="130" selection-start-column="41" selection-end-line="130" selection-end-column="41" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="method#testCompareSearchFieldPlaceholder#0;class#FirstTest#0" />
+            <element signature="method#testCancelSearch#0;class#FirstTest#0" />
           </folding>
         </state>
       </provider>

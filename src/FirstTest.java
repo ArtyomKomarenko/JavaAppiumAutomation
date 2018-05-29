@@ -36,7 +36,29 @@ public class FirstTest {
         driver.quit();
     }
 
+    @Test
+    public void testCompareSearchFieldPlaceholder()
+    {
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "Cannot find 'Search Wikipedia' input",
+                5
+        );
 
+        WebElement search_element = waitForElementPresent(
+                By.id("org.wikipedia:id/search_src_text"),
+                "Cannot find search input",
+                15
+        );
+
+        String search_text = search_element.getAttribute("text");
+
+        Assert.assertEquals(
+                "We see unexpected text!",
+                "Search…",
+                search_text
+        );
+    }
 
     private WebElement waitForElementPresent(By by, String error_message, long timeoutInSeconds)
     {

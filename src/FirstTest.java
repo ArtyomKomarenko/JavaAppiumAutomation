@@ -83,9 +83,16 @@ public class FirstTest {
                 15
         );
 
+        List<WebElement> articles = driver.findElementsById("org.wikipedia:id/page_list_item_container");
+
+        Assert.assertTrue(
+                "There is only one article!",
+                articles.size() > 1
+        );
+
         waitForElementAndClear(
                 By.id("org.wikipedia:id/search_src_text"),
-                "Cannnot find search field",
+                "Cannot find search field",
                 5
         );
 

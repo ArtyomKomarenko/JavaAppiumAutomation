@@ -134,11 +134,15 @@ public class FirstTest {
         );
 
         List<WebElement> titles = driver.findElementsById("org.wikipedia:id/page_list_item_title");
+        if (titles.size() == 0) {
+            Assert.fail("Articles don't have title!");
+        }
 
         for (WebElement title : titles) {
+            String actualTitle = title.getAttribute("text");
             Assert.assertTrue(
-                    "Title does not contain search word!",
-                    title.getAttribute("text").contains(searchWord)
+                    "Title \"" + actualTitle +"\" does not contain search word \"" + searchWord + "\"!",
+                    actualTitle.contains(searchWord)
             );
         }
     }

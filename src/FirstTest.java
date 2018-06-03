@@ -193,7 +193,7 @@ public class FirstTest {
         return element;
     }
 
-    protected void swipeUp(int timeOfSwipe)
+    private void swipeUp(int timeOfSwipe)
     {
         TouchAction action = new TouchAction(driver);
         Dimension size = driver.manage().window().getSize();
@@ -209,12 +209,12 @@ public class FirstTest {
                 .perform();
     }
 
-    protected void swipeUpQuick()
+    private void swipeUpQuick()
     {
         swipeUp(200);
     }
 
-    protected void swipeUpToFindElements(By by, String error_message, int max_swipes)
+    private void swipeUpToFindElements(By by, String error_message, int max_swipes)
     {
         int already_swiped = 0;
         while(driver.findElements(by).size() == 0){
@@ -229,7 +229,7 @@ public class FirstTest {
         }
     }
 
-    protected void swipeElementToLeft(By by, String error_message)
+    private void swipeElementToLeft(By by, String error_message)
     {
         WebElement element = waitForElementPresent(by, error_message, 10);
         int left_x = element.getLocation().getX();

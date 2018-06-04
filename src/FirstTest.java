@@ -149,6 +149,216 @@ public class FirstTest {
         }
     }
 
+    @Test
+    public void testSaveTwoArticlesAndDelete()
+    {
+        String search_word = "Star Wars";
+        String folder_name = "My test list";
+        int amount_of_search_results;
+
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_container"),
+                "Cannot find 'Search Wikipedia' input",
+                5
+        );
+
+        // Ищем первую статью
+        waitForElementAndSendKeys(
+                By.id("org.wikipedia:id/search_src_text"),
+                search_word,
+                "Cannot find search input",
+                5
+        );
+
+        String search_result_locator = "//*[@resource-id='org.wikipedia:id/search_results_list']/*[@resource-id='org.wikipedia:id/page_list_item_container']";
+        waitForElementPresent(
+                By.xpath(search_result_locator),
+                "Cannot find anything by request " + search_word,
+                15
+        );
+
+        amount_of_search_results = getAmountOfElements(By.xpath(search_result_locator));
+        Assert.assertTrue(
+                "We found only one article, for test there should be two articles",
+                amount_of_search_results > 1
+        );
+
+        waitForElementAndClick(
+                By.xpath(search_result_locator + "[@index='0']"),
+                "Cannot find first article in search result",
+                5
+        );
+
+        String first_article_title = waitForElementAndGetAttribute(
+                By.id("org.wikipedia:id/view_page_title_text"),
+                "text",
+                "Cannot find article title",
+                15
+        );
+
+        waitForElementAndClick(
+                By.xpath("//android.widget.ImageView[@content-desc='More options']"),
+                "Cannot find button to open article options",
+                5
+        );
+
+        waitForElementAndClick(
+                By.xpath("//*[@text='Add to reading list']"),
+                "Cannot find option to add article to reading list",
+                5
+        );
+
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/onboarding_button"),
+                "Cannot find 'Got it' tip overlay",
+                5
+        );
+
+        waitForElementAndClear(
+                By.id("org.wikipedia:id/text_input"),
+                "Cannot find input to set name of articles folder",
+                5
+        );
+
+        waitForElementAndSendKeys(
+                By.id("org.wikipedia:id/text_input"),
+                folder_name,
+                "Cannot put text into articles folder input",
+                5
+        );
+
+        waitForElementAndClick(
+                By.xpath("//android.widget.Button[@text='OK']"),
+                "Cannot press OK button",
+                5
+        );
+
+        waitForElementAndClick(
+                By.xpath("//android.widget.ImageButton[@content-desc='Navigate up']"),
+                "Cannot close article, cannot find X",
+                5
+        );
+
+        // Ищем вторую статью
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_container"),
+                "Cannot find 'Search Wikipedia' input",
+                5
+        );
+
+        waitForElementAndSendKeys(
+                By.id("org.wikipedia:id/search_src_text"),
+                search_word,
+                "Cannot find search input",
+                5
+        );
+
+        waitForElementPresent(
+                By.xpath(search_result_locator),
+                "Cannot find anything by request " + search_word,
+                15
+        );
+
+        amount_of_search_results = getAmountOfElements(By.xpath(search_result_locator));
+        Assert.assertTrue(
+                "We found only one article, for test there should be two articles",
+                amount_of_search_results > 1
+        );
+
+        waitForElementAndClick(
+                By.xpath(search_result_locator + "[@index='1']"),
+                "Cannot find second article in search result",
+                5
+        );
+
+        String second_article_title = waitForElementAndGetAttribute(
+                By.id("org.wikipedia:id/view_page_title_text"),
+                "text",
+                "Cannot find article title",
+                15
+        );
+
+        waitForElementAndClick(
+                By.xpath("//android.widget.ImageView[@content-desc='More options']"),
+                "Cannot find button to open article options",
+                5
+        );
+
+        waitForElementAndClick(
+                By.xpath("//*[@text='Add to reading list']"),
+                "Cannot find option to add article to reading list",
+                5
+        );
+
+        String created_folder_listitem = "//*[@resource-id='org.wikipedia:id/item_container']//*[@text='" + folder_name + "']";
+        waitForElementAndClick(
+                By.xpath(created_folder_listitem),
+                "Cannot find created folder",
+                5
+        );
+
+        waitForElementNotPresent(
+                By.xpath(created_folder_listitem),
+                "Cannot add article to existing list",
+                5
+        );
+
+        waitForElementAndClick(
+                By.xpath("//android.widget.ImageButton[@content-desc='Navigate up']"),
+                "Cannot close article, cannot find X",
+                5
+        );
+
+        // Переходим в сохраненный список
+        waitForElementAndClick(
+                By.xpath("//android.widget.FrameLayout[@content-desc='My lists']"),
+                "Cannot find  navigation button to My lists",
+                5
+        );
+
+        waitForElementAndClick(
+                By.xpath(created_folder_listitem),
+                "Cannot find created folder on My lists screen",
+                5
+        );
+
+        waitForElementPresent(
+                By.id("org.wikipedia:id/item_title"),
+                "Cannot find list title",
+                15
+        );
+
+        swipeElementToLeft(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_title'][@text='" + first_article_title + "']"),
+                "Cannot find saved article " + first_article_title
+        );
+
+        assertElementNotPresent(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_title'][@text='" + first_article_title + "']"),
+                "Cannot delete saved article " + first_article_title
+        );
+
+        waitForElementAndClick(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_title'][@text='" + second_article_title + "']"),
+                "Cannot find saved article " + second_article_title,
+                5
+        );
+
+        String last_article_title = waitForElementAndGetAttribute(
+                By.id("org.wikipedia:id/view_page_title_text"),
+                "text",
+                "Cannot find article title",
+                15
+        );
+
+        Assert.assertEquals(
+                "Last article title '" + last_article_title + "' is different from expected title '" + second_article_title + "'",
+                second_article_title,
+                last_article_title
+        );
+
+    }
+
     private WebElement waitForElementPresent(By by, String error_message, long timeoutInSeconds)
     {
         WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);

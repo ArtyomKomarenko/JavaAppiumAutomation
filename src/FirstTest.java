@@ -7,7 +7,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
-import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -390,28 +389,6 @@ public class FirstTest {
         );
     }
 
-    @Test
-    public void testForceFailAfterRotating()
-    {
-        ScreenOrientation default_orientation = driver.getOrientation();
-
-        try {
-            driver.rotate(ScreenOrientation.LANDSCAPE);
-
-            waitForElementPresent(
-                    By.id("org.wikipedia:id/search_container"),
-                    "Cannot find 'Search Wikipedia' input",
-                    5
-            );
-
-            Assert.fail("Force fail");
-
-        } catch (AssertionError e) {
-            e.printStackTrace();
-        } finally {
-           driver.rotate(default_orientation);
-        }
-    }
 
     private WebElement waitForElementPresent(By by, String error_message, long timeoutInSeconds)
     {

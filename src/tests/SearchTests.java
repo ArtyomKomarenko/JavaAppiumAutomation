@@ -57,4 +57,23 @@ public class SearchTests extends CoreTestCase {
 
         SearchPageObject.checkTextInArticles(articles, searchWord);
     }
+
+    @Test
+    public void testCheckFirstThreeSearchResults()
+    {
+        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+
+        SearchPageObject.initSearchInput();
+        SearchPageObject.typeSearchLine("Deadpool");
+
+        int amount_of_found_articles = SearchPageObject.getAmountOfFoundArticles();
+        assertTrue(
+                "There are too few search results for test, should be at least 3",
+                amount_of_found_articles >= 3
+        );
+
+        SearchPageObject.waitForElementByTitleAndDescription("Deadpool", "Character appearing in Marvel Comics");
+        SearchPageObject.waitForElementByTitleAndDescription("Deadpool 2", "2018 film directed by David Leitch");
+        SearchPageObject.waitForElementByTitleAndDescription("Deadpool (film)", "2016 superhero film produced by Marvel Entertainment");
+    }
 }

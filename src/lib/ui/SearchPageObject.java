@@ -2,6 +2,11 @@ package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+
+import java.util.List;
+
+import static junit.framework.TestCase.assertTrue;
 
 public class SearchPageObject extends MainPageObject {
 
@@ -9,9 +14,10 @@ public class SearchPageObject extends MainPageObject {
             SEARCH_INIT_ELEMENT = "//*[contains(@text, 'Search Wikipedia')]",
             SEARCH_INPUT = "//*[contains(@text, 'Search…')]",
             SEARCH_CANCEL_BUTTON = "org.wikipedia:id/search_close_btn",
-            SEARCH_RESULT_BY_SUBSTRING_TPL = "//*[@resource-id='org.wikipedia:id/page_list_item_container']//[@text='{SUBSTRING}']",
+            SEARCH_RESULT_BY_SUBSTRING_TPL = "//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='{SUBSTRING}']",
             SEARCH_RESULT_ELEMENT = "//*[@resource-id='org.wikipedia:id/search_results_list']/*[@resource-id='org.wikipedia:id/page_list_item_container']",
-            SEARCH_EMPTY_RESULT_ELEMENT = "//*[@text='No results found']";
+            SEARCH_EMPTY_RESULT_ELEMENT = "//*[@text='No results found']",
+            SEARCH_RESULT_TITLE = "org.wikipedia:id/page_list_item_title";
 
     public SearchPageObject(AppiumDriver driver) {
         super(driver);
@@ -51,7 +57,7 @@ public class SearchPageObject extends MainPageObject {
         this.waitForElementNotPresent(
                 By.id(SEARCH_CANCEL_BUTTON),
                 "Search cancel button still present",
-                5
+                10
         );
     }
 
@@ -74,9 +80,20 @@ public class SearchPageObject extends MainPageObject {
         );
     }
 
+    public String getSearchInputPlaceholder()
+    {
+        WebElement search_input_element = waitForElementPresent(
+                By.xpath(SEARCH_INPUT),
+                "Cannot find search input",
+                5
+        );
+        return search_input_element.getAttribute("text");
+    }
+
     public void waitForSearchResult(String substring)
     {
         String search_result_xpath = getResultSearchElement(substring);
+        System.out.println(search_result_xpath);
         this.waitForElementPresent(
                 By.xpath(search_result_xpath),
                 "Cannot find search result by substring " + substring
@@ -93,6 +110,15 @@ public class SearchPageObject extends MainPageObject {
         );
     }
 
+    public void clickByArticleByPositionInResults(int position)
+    {
+        this.waitForElementAndClick(
+                By.xpath(SEARCH_RESULT_ELEMENT + "[@index='" + (position - 1) + "']"),
+                "Cannot find article on position " + position,
+                5
+        );
+    }
+
     public int getAmountOfFoundArticles()
     {
         this.waitForElementPresent(
@@ -101,6 +127,28 @@ public class SearchPageObject extends MainPageObject {
                 15
         );
         return this.getAmountOfElements(By.xpath(SEARCH_RESULT_ELEMENT));
+    }
+
+    public List getFoundArticleElements()
+    {
+        this.waitForElementPresent(
+                By.xpath(SEARCH_RESULT_ELEMENT),
+                "Cannot find anything by request",
+                15
+        );
+        return driver.findElementsByXPath(SEARCH_RESULT_ELEMENT);
+    }
+
+    public void checkTextInArticles(List<WebElement> articles, String text)
+    {
+        for (WebElement article : articles) {
+            WebElement title_element = article.findElement(By.id(SEARCH_RESULT_TITLE));
+            String title = title_element.getAttribute("text");
+            assertTrue(
+                    "Title '" + title +"' does not contain search word '" + text + "'!",
+                    title.contains(text)
+            );
+        }
     }
 
     public void waitForEmptySearchResultLabel()

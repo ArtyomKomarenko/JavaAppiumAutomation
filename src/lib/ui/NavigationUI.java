@@ -5,8 +5,8 @@ import org.openqa.selenium.By;
 
 public class NavigationUI extends MainPageObject {
 
-    public static final String
-            MY_LISTS_LINK = "//android.widget.FrameLayout[@content-desc='My lists']";
+    private static final String
+            MY_LISTS_LINK = "xpath://android.widget.FrameLayout[@content-desc='My lists']";
 
     public NavigationUI(AppiumDriver driver)
     {
@@ -16,7 +16,7 @@ public class NavigationUI extends MainPageObject {
     public void clickMyLists()
     {
         this.waitForElementAndClick(
-                By.xpath(MY_LISTS_LINK),
+                MY_LISTS_LINK,
                 "Canot find navigation button to My Lists",
                 5
         );

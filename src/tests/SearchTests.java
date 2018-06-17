@@ -2,6 +2,7 @@ package tests;
 
 import lib.CoreTestCase;
 import lib.ui.SearchPageObject;
+import lib.ui.factories.SearchPageObjectFactory;
 import org.junit.Test;
 import org.openqa.selenium.WebElement;
 
@@ -10,9 +11,8 @@ import java.util.List;
 public class SearchTests extends CoreTestCase {
 
     @Test
-    public void testCompareSearchFieldPlaceholder()
-    {
-        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+    public void testCompareSearchFieldPlaceholder() {
+        SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
 
         SearchPageObject.initSearchInput();
         String search_text = SearchPageObject.getSearchInputPlaceholder();
@@ -25,9 +25,8 @@ public class SearchTests extends CoreTestCase {
     }
 
     @Test
-    public void testCancelSearch()
-    {
-        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+    public void testCancelSearch() {
+        SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
 
         SearchPageObject.initSearchInput();
         SearchPageObject.typeSearchLine("Star Wars");
@@ -45,10 +44,9 @@ public class SearchTests extends CoreTestCase {
     }
 
     @Test
-    public void testCheckTextInArticles()
-    {
+    public void testCheckTextInArticles() {
         String searchWord = "Star Wars";
-        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
 
         SearchPageObject.initSearchInput();
         SearchPageObject.typeSearchLine(searchWord);
@@ -59,9 +57,8 @@ public class SearchTests extends CoreTestCase {
     }
 
     @Test
-    public void testCheckFirstThreeSearchResults()
-    {
-        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+    public void testCheckFirstThreeSearchResults() {
+        SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
 
         SearchPageObject.initSearchInput();
         SearchPageObject.typeSearchLine("Deadpool");

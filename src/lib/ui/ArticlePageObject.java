@@ -1,41 +1,42 @@
 package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
-import org.openqa.selenium.By;
+import lib.Platform;
 import org.openqa.selenium.WebElement;
 
-import java.util.regex.Pattern;
+abstract public class ArticlePageObject extends MainPageObject {
 
-public class ArticlePageObject extends MainPageObject {
 
-    private static final String
-            TITLE = "id:org.wikipedia:id/view_page_title_text",
-            FOOTER_ELEMENT = "xpath://*[@text='View page in browser']",
-            OPTIONS_BUTTON = "xpath://android.widget.ImageView[@content-desc='More options']",
-            OPTIONS_ADD_TO_MY_LIST_BUTTON = "xpath://*[@text='Add to reading list']",
-            ADD_TO_MY_LIST_OVERLAY = "id:org.wikipedia:id/onboarding_button",
-            MY_LIST_NAME_INPUT = "id:org.wikipedia:id/text_input",
-            MY_LIST_OK_BUTTON = "xpath://*[@text='OK']",
-            CLOSE_ARTICLE_BUTTON = "xpath://android.widget.ImageButton[@content-desc='Navigate up']",
-            FOLDER_BY_NAME_TPL = "xpath://*[@resource-id='org.wikipedia:id/item_container']//*[@text='{FOLDER_NAME}']";
+    protected static String
+            TITLE,
+            FOOTER_ELEMENT,
+            OPTIONS_BUTTON,
+            OPTIONS_ADD_TO_MY_LIST_BUTTON,
+            ADD_TO_MY_LIST_OVERLAY,
+            MY_LIST_NAME_INPUT,
+            MY_LIST_OK_BUTTON,
+            CLOSE_ARTICLE_BUTTON,
+            FOLDER_BY_NAME_TPL;
 
     public static boolean first_launch;
 
-    public ArticlePageObject(AppiumDriver driver)
-    {
+    public ArticlePageObject(AppiumDriver driver) {
         super(driver);
 
         first_launch = true;
     }
 
     /* TEMPLATE METHODS */
+    private static String getTitleXpathByName(String title) {
+        return TITLE.replace("{TITLE}", title);
+    }
+
     private static String getFolderXpathByName(String name_of_folder) {
         return FOLDER_BY_NAME_TPL.replace("{FOLDER_NAME}", name_of_folder);
     }
     /* TEMPLATE METHODS */
 
-    public WebElement waitForTitleElement()
-    {
+    public WebElement waitForTitleElement() {
         return this.waitForElementPresent(
                 TITLE,
                 "Cannot find article title on page",
@@ -43,34 +44,80 @@ public class ArticlePageObject extends MainPageObject {
         );
     }
 
-    public String getArticleTitle()
-    {
-        WebElement title_element = waitForTitleElement();
-        return title_element.getAttribute("text");
+    public WebElement waitForTitleElement(String title) {
+        String title_xpath = getTitleXpathByName(title);
+        System.out.println(title_xpath);
+        return this.waitForElementPresent(
+                title_xpath,
+                "Cannot find article title on page",
+                15
+        );
     }
 
-    public String getArticleTitleImmediately()
-    {
+    public String getArticleTitle() {
+        WebElement title_element = waitForTitleElement();
+        if (Platform.getInstance().isAndroid()) {
+            return title_element.getAttribute("text");
+        } else {
+            return title_element.getAttribute("name");
+        }
+    }
+
+    public String getArticleTitle(String title) {
+        WebElement title_element = waitForTitleElement(title);
+        if (Platform.getInstance().isAndroid()) {
+            return title_element.getAttribute("text");
+        } else {
+            return title_element.getAttribute("name");
+        }
+    }
+
+    public String getArticleTitleImmediately() {
         this.assertElementPresent(
                 TITLE,
                 "Cannot find article title"
         );
         WebElement title_element = getElement(TITLE);
-        //WebElement title_element = driver.findElement(By.id(TITLE.split(Pattern.quote(":"), 2)[1]));
-        return title_element.getAttribute("text");
+        if (Platform.getInstance().isAndroid()) {
+            return title_element.getAttribute("text");
+        } else {
+            return title_element.getAttribute("name");
+        }
     }
 
-    public void swipeToFooter()
-    {
-        this.swipeUpToFindElement(
-                FOOTER_ELEMENT,
-                "Cannot find the end of article",
-                20
+    public String getArticleTitleImmediately(String title) {
+        String title_id = getTitleXpathByName(title);
+        this.assertElementPresent(
+                title_id,
+                "Cannot find article title"
         );
+        WebElement title_element = getElement(title_id);
+        if (Platform.getInstance().isAndroid()) {
+            return title_element.getAttribute("text");
+        } else {
+            return title_element.getAttribute("name");
+        }
     }
 
-    public void addArticleToMyList(String name_of_folder, boolean create_new_folder)
-    {
+    public void swipeToFooter() {
+        if (Platform.getInstance().isAndroid()) {
+            this.swipeUpToFindElement(
+                    FOOTER_ELEMENT,
+                    "Cannot find the end of article",
+                    40
+            );
+        } else {
+            this.swipeUpTillElementAppear(
+                    FOOTER_ELEMENT,
+                    "Cannot find the end of article",
+                    40
+            );
+        }
+    }
+
+    public void addArticleToMyList(String name_of_folder, boolean create_new_folder) {
+        this.waitForTitleElement();
+
         this.waitForElementAndClick(
                 OPTIONS_BUTTON,
                 "Cannot find button to open article options",
@@ -83,7 +130,7 @@ public class ArticlePageObject extends MainPageObject {
                 5
         );
 
-        if(first_launch) {
+        if (first_launch) {
             this.waitForElementAndClick(
                     ADD_TO_MY_LIST_OVERLAY,
                     "Cannot find 'Got it' tip overlay",
@@ -93,7 +140,7 @@ public class ArticlePageObject extends MainPageObject {
             first_launch = false;
         }
 
-        if(create_new_folder) {
+        if (create_new_folder) {
             this.waitForElementAndClear(
                     MY_LIST_NAME_INPUT,
                     "Cannot find input to set name of articles folder",
@@ -128,16 +175,22 @@ public class ArticlePageObject extends MainPageObject {
         }
     }
 
-    public void addArticleToMyList(String name_of_folder)
-    {
+    public void addArticleToMyList(String name_of_folder) {
         addArticleToMyList(name_of_folder, false);
     }
 
-    public void closeArticle()
-    {
+    public void closeArticle() {
         this.waitForElementAndClick(
                 CLOSE_ARTICLE_BUTTON,
                 "Cannot close article, cannot find X link",
+                5
+        );
+    }
+
+    public void addArticleToMySaved() {
+        this.waitForElementAndClick(
+                OPTIONS_ADD_TO_MY_LIST_BUTTON,
+                "Cannot find find option to add article to reading list",
                 5
         );
     }

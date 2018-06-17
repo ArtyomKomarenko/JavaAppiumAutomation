@@ -1,6 +1,7 @@
 package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
+import lib.Platform;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
@@ -9,17 +10,17 @@ import java.util.regex.Pattern;
 
 import static junit.framework.TestCase.assertTrue;
 
-public class SearchPageObject extends MainPageObject {
+abstract public class SearchPageObject extends MainPageObject {
 
-    private static final String
-            SEARCH_INIT_ELEMENT = "xpath://*[contains(@text, 'Search Wikipedia')]",
-            SEARCH_INPUT = "xpath://*[contains(@text, 'Search…')]",
-            SEARCH_CANCEL_BUTTON = "id:org.wikipedia:id/search_close_btn",
-            SEARCH_RESULT_BY_SUBSTRING_TPL = "xpath://*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='{SUBSTRING}']",
-            SEARCH_RESULT_ELEMENT = "xpath://*[@resource-id='org.wikipedia:id/search_results_list']/*[@resource-id='org.wikipedia:id/page_list_item_container']",
-            SEARCH_EMPTY_RESULT_ELEMENT = "xpath://*[@text='No results found']",
-            SEARCH_RESULT_TITLE = "id:org.wikipedia:id/page_list_item_title",
-            SEARCH_RESULT_BY_TITLE_AND_DESCRIPTION_TPL = "xpath://*[@resource-id='org.wikipedia:id/page_list_item_title'][@text='{TITLE}']/following-sibling::*[@resource-id='org.wikipedia:id/page_list_item_description'][@text='{DESCRIPTION}']";
+    protected static String
+            SEARCH_INIT_ELEMENT,
+            SEARCH_INPUT,
+            SEARCH_CANCEL_BUTTON,
+            SEARCH_RESULT_BY_SUBSTRING_TPL,
+            SEARCH_RESULT_ELEMENT,
+            SEARCH_EMPTY_RESULT_ELEMENT,
+            SEARCH_RESULT_TITLE,
+            SEARCH_RESULT_BY_TITLE_AND_DESCRIPTION_TPL;
 
     public SearchPageObject(AppiumDriver driver) {
         super(driver);
@@ -37,8 +38,7 @@ public class SearchPageObject extends MainPageObject {
     }
     /* TEMPLATE METHODS */
 
-    public void initSearchInput()
-    {
+    public void initSearchInput() {
         this.waitForElementAndClick(
                 SEARCH_INIT_ELEMENT,
                 "Cannot find and click init element",
@@ -51,8 +51,7 @@ public class SearchPageObject extends MainPageObject {
         );
     }
 
-    public void waitForCancelButtonToAppear()
-    {
+    public void waitForCancelButtonToAppear() {
         this.waitForElementPresent(
                 SEARCH_CANCEL_BUTTON,
                 "Cannot find search cancel button",
@@ -60,8 +59,7 @@ public class SearchPageObject extends MainPageObject {
         );
     }
 
-    public void waitForCancelButtonToDisappear()
-    {
+    public void waitForCancelButtonToDisappear() {
         this.waitForElementNotPresent(
                 SEARCH_CANCEL_BUTTON,
                 "Search cancel button still present",
@@ -69,8 +67,7 @@ public class SearchPageObject extends MainPageObject {
         );
     }
 
-    public void clickCancelButton()
-    {
+    public void clickCancelButton() {
         this.waitForElementAndClick(
                 SEARCH_CANCEL_BUTTON,
                 "Cannot find and click search cancel button",
@@ -78,8 +75,7 @@ public class SearchPageObject extends MainPageObject {
         );
     }
 
-    public void typeSearchLine(String search_line)
-    {
+    public void typeSearchLine(String search_line) {
         this.waitForElementAndSendKeys(
                 SEARCH_INPUT,
                 search_line,
@@ -88,8 +84,7 @@ public class SearchPageObject extends MainPageObject {
         );
     }
 
-    public String getSearchInputPlaceholder()
-    {
+    public String getSearchInputPlaceholder() {
         WebElement search_input_element = waitForElementPresent(
                 SEARCH_INPUT,
                 "Cannot find search input",
@@ -98,8 +93,7 @@ public class SearchPageObject extends MainPageObject {
         return search_input_element.getAttribute("text");
     }
 
-    public void waitForSearchResult(String substring)
-    {
+    public void waitForSearchResult(String substring) {
         String search_result_xpath = getResultSearchElement(substring);
         this.waitForElementPresent(
                 search_result_xpath,
@@ -107,8 +101,7 @@ public class SearchPageObject extends MainPageObject {
         );
     }
 
-    public void waitForElementByTitleAndDescription(String title, String description)
-    {
+    public void waitForElementByTitleAndDescription(String title, String description) {
         String search_result_xpath = getResultSearchElementByTitleAndDescription(title, description);
         this.waitForElementPresent(
                 search_result_xpath,
@@ -116,8 +109,7 @@ public class SearchPageObject extends MainPageObject {
         );
     }
 
-    public void clickByArticleWithSubstring(String substring)
-    {
+    public void clickByArticleWithSubstring(String substring) {
         String search_result_xpath = getResultSearchElement(substring);
         this.waitForElementAndClick(
                 search_result_xpath,
@@ -126,17 +118,22 @@ public class SearchPageObject extends MainPageObject {
         );
     }
 
-    public void clickByArticleByPositionInResults(int position)
-    {
-        this.waitForElementAndClick(
-                SEARCH_RESULT_ELEMENT + "[@index='" + (position - 1) + "']",
-                "Cannot find article on position " + position,
-                5
-        );
+    public void clickByArticleByPositionInResults(int position) {
+        if (Platform.getInstance().isAndroid()) {
+            this.waitForElementAndClick(
+                    SEARCH_RESULT_ELEMENT + "[@index='" + (position - 1) + "']",
+                    "Cannot find article on position " + position,
+                    5
+            );
+        } else {
+            this.clickElementByPosition(
+                    SEARCH_RESULT_ELEMENT,
+                    position,
+                    "Cannot find articles in search result");
+        }
     }
 
-    public int getAmountOfFoundArticles()
-    {
+    public int getAmountOfFoundArticles() {
         this.waitForElementPresent(
                 SEARCH_RESULT_ELEMENT,
                 "Cannot find anything by request",
@@ -145,31 +142,27 @@ public class SearchPageObject extends MainPageObject {
         return this.getAmountOfElements(SEARCH_RESULT_ELEMENT);
     }
 
-    public List getFoundArticleElements()
-    {
+    public List getFoundArticleElements() {
         this.waitForElementPresent(
                 SEARCH_RESULT_ELEMENT,
                 "Cannot find anything by request",
                 15
         );
         return getElements(SEARCH_RESULT_ELEMENT);
-        //return driver.findElementsByXPath(SEARCH_RESULT_ELEMENT.split(Pattern.quote(":"), 2)[1]);
     }
 
-    public void checkTextInArticles(List<WebElement> articles, String text)
-    {
+    public void checkTextInArticles(List<WebElement> articles, String text) {
         for (WebElement article : articles) {
             WebElement title_element = article.findElement(By.id(SEARCH_RESULT_TITLE.split(Pattern.quote(":"), 2)[1]));
             String title = title_element.getAttribute("text");
             assertTrue(
-                    "Title '" + title +"' does not contain search word '" + text + "'!",
+                    "Title '" + title + "' does not contain search word '" + text + "'!",
                     title.contains(text)
             );
         }
     }
 
-    public void waitForEmptySearchResultLabel()
-    {
+    public void waitForEmptySearchResultLabel() {
         this.waitForElementPresent(
                 SEARCH_EMPTY_RESULT_ELEMENT,
                 "Cannot find empty result element",
@@ -177,8 +170,22 @@ public class SearchPageObject extends MainPageObject {
         );
     }
 
-    public void assertThereIsNoResultOfSearch()
-    {
+    public void assertThereIsNoResultOfSearch() {
         this.assertElementNotPresent(SEARCH_RESULT_ELEMENT, "We supposed not to find any results");
+    }
+
+    public String getTitleOfSearchResultByPosition(int position)
+    {
+        this.waitForElementPresent(SEARCH_RESULT_ELEMENT, "Articles not found");
+
+        String locator;
+        if(Platform.getInstance().isAndroid()) {
+            locator = SEARCH_RESULT_TITLE;
+        } else {
+            locator = SEARCH_RESULT_ELEMENT;
+        }
+
+        return getTextFromElementByPosition(locator, position);
+
     }
 }
